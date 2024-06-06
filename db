@@ -1,0 +1,43 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class Main {
+    public static void main(String[] args) {
+        // Datos de conexión
+        String url = "jdbc:sqlserver://<nombre_servidor>:<puerto>;databaseName=<nombre_base_datos>";
+        String usuario = "<usuario>";
+        String contraseña = "<contraseña>";
+
+        // Objeto Connection para la conexión
+        Connection conexion = null;
+
+        try {
+            // Cargar el driver JDBC para SQL Server
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+            // Establecer la conexión
+            conexion = DriverManager.getConnection(url, usuario, contraseña);
+
+            if (conexion != null) {
+                System.out.println("Conexión exitosa a la base de datos.");
+                // Aquí puedes realizar operaciones en la base de datos
+            } else {
+                System.out.println("No se pudo establecer la conexión.");
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("No se encontró el driver JDBC: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Error al conectar a la base de datos: " + e.getMessage());
+        } finally {
+            // Cerrar la conexión al finalizar
+            try {
+                if (conexion != null) {
+                    conexion.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexión: " + e.getMessage());
+            }
+        }
+    }
+}
